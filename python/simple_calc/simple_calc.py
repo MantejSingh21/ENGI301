@@ -44,6 +44,10 @@ Operations:
   - subtraction
   - multiplication
   - division
+  - lshift
+  - rshift
+  - modulo
+  - exponentiation
 
 Error conditions:
   - Invalid operator --> Program should exit
@@ -51,8 +55,8 @@ Error conditions:
 
 --------------------------------------------------------------------------
 """
-
 import operator
+import sys
 
 # ------------------------------------------------------------------------
 # Constants
@@ -62,11 +66,12 @@ import operator
 # ------------------------------------------------------------------------
 # Global variables
 # ------------------------------------------------------------------------
+
 operators = {
-    "*" : operator.mul ,
-    "/" : operator.truediv ,
-    "+" : operator.add,
-    "-" : operator.sub,
+    "+"  : operator.add,
+    "-"  : operator.sub,
+    "*"  : operator.mul,
+    "/"  : operator.truediv,
     ">>": operator.rshift,
     "<<": operator.lshift,
     "%": operator.mod,
@@ -76,23 +81,46 @@ operators = {
 # ------------------------------------------------------------------------
 # Functions
 # ------------------------------------------------------------------------
-
 def get_user_input():
-    """ Get the input from the user; two numbers and an operator"""
+    """Get input from the user:  two numbers and operator."""
     
-    try:
-        number1 = float(raw_input("Enter number 1: "))
-        number2 = float(raw_input("Enter number 2: "))
-        operator = raw_input("Enter operator. Valid operators are +, -, *, /, >>, <<, %, ** ---> ")
+    # I saw a stack overflow article about binding: https://stackoverflow.com/questions/21731043/use-of-input-raw-input-in-python-2-and-3
+    # but it did not work for me but here is a valid workaround!
     
-        return (number1, number2, operator)
+    # If python3 is used, we use input
     
-    except:
-        print("Invalid user input")
-        return (None, None, None)
+    if(sys.version_info[0] == 3):
+        try:
+            number1  = float(input("Enter the first number:  "))
+            number2  = float(input("Enter the second number: "))
+            operator = input("Enter the operator (valid operators are +, -, *, /, >>, <<, %, ** ): ")
+            return (number1, number2, operator)
+        except:
+            print("Invalid Input")
+            return (None, None, None)
+            
+    
+    # If python2 is used, we use raw_input
+    if(sys.version_info[0] == 2):
+        try:
+            number1  = float(raw_input("Enter the first number:  "))
+            number2  = float(raw_input("Enter the second number: "))
+            operator = raw_input("Enter the operator (valid operators are +, -, *, /, >>, <<, %, ** ): ")
+            return (number1, number2, operator)
+        except:
+            print("Invalid Input")
+            return (None, None, None)
+    
+    # try:
+    #     input = raw_input
+    # except NameError:
+    #     pass
+    
+        
+ 
 
-# END DEF
-    
+# End def
+
 
 # ------------------------------------------------------------------------
 # Main script
@@ -101,7 +129,6 @@ def get_user_input():
 if __name__ == "__main__":
     
     while True:
-        
         # Get user input
         (number1, number2, operator) = get_user_input()
         
@@ -110,19 +137,15 @@ if __name__ == "__main__":
         if operator == ">>" or "<<":
             number1 = int(number1)
             number2 = int(number2)
-        
-        # Get operator
+
+        # Get function to execute from operators dictionary
         function = operators.get(operator, None)
-        
-        # Check if there was an error with the inputs obtained
-        if (number1 is None or number2 is None or function is None):
-            print("Invalid input detected")
+
+        # Check if there was an error; Exit the program        
+        if (number1 is None) or (number2 is None) or (function is None):
+            print("Exiting")
             break
-        
-        # Calculate and print out the result    
+
+        # Calculate results and print result
         print(function(number1, number2))
-    
-    
-    
-   
     
