@@ -96,11 +96,11 @@ HT16K33_BRIGHTNESS_DARKEST  = 0x00
 
 def display_setup():
     """Setup display"""
-    # i2cset -y 0 0x70 0x21
+    # i2cset -y 1 0x70 0x21
     os.system("{0} {1}".format(DISPLAY_CMD, (HT16K33_SYSTEM_SETUP | HT16K33_OSCILLATOR)))
-    # i2cset -y 0 0x70 0x81
+    # i2cset -y 1 0x70 0x81
     os.system("{0} {1}".format(DISPLAY_CMD, (HT16K33_BLINK_CMD | HT16K33_BLINK_OFF | HT16K33_BLINK_DISPLAYON)))
-    # i2cset -y 0 0x70 0xEF
+    # i2cset -y 1 0x70 0xEF
     os.system("{0} {1}".format(DISPLAY_CMD, (HT16K33_BRIGHTNESS_CMD | HT16K33_BRIGHTNESS_HIGHEST)))
 
 # End def
@@ -159,14 +159,40 @@ def update_display(value):
     
     Will throw a ValueError if number is not between 0 and 9999.
     """    
+    # check to make sure value is between 0 and 9999
+    if (value < 0) or (value > 9999) :
+        raise ValueError("Input number must be between 0 and 9999")
     
     # Clearing the display
     display_clear()
     
-    display_set_digit(0, value)
-    display_set_digit(1, value)
-    display_set_digit(2, value)
-    #raise ValueError("Function not implemented.")
+    display_set_digit(3, value % 10) # ones digit
+    display_set_digit(2, (value // 10) % 10) # tens digit
+    display_set_digit(1, (value // 100) % 10) # hundreds digit
+    display_set_digit(0, (value // 1000) % 10)  # thousands digit
+    
+    # valueList = [int(x) for x in str(value)]
+    
+    # print(valueList)
+    
+    # if len(valueList) == 1:
+    #     display_set_digit(0, valueList[0])
+    
+    # elif len(valueList) == 2:
+    #     display_set_digit(0, valueList[1])
+    #     display_set_digit(1, valueList[0])
+    
+    # elif len(valueList) == 3:
+    #     display_set_digit(0, valueList[2])
+    #     display_set_digit(1, valueList[1])
+    #     display_set_digit(2, valueList[0])
+    
+    # elif len(valueList) == 4:
+    #     display_set_digit(0, valueList[3])
+    #     display_set_digit(1, valueList[2])
+    #     display_set_digit(2, valueList[1])
+    #     display_set_digit(3, valueList[0])
+        
 
 # End def
 
@@ -202,7 +228,7 @@ if __name__ == '__main__':
         time.sleep(delay)
 
     display_clear()    
-    print("Test Finished.")
 
+    print("Test Finished.")
 
 
