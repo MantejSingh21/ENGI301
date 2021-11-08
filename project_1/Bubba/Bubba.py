@@ -4,11 +4,16 @@ import Adafruit_BBIO.GPIO as GPIO
 import time
 import threading 
 import os
+
 # Initial Variables
 servo1 = "P2_1"
 servo2 = "P2_3"
 servo3 = "P1_36"
 servo4 = "P1_33"
+trigger = "P1_6"
+echo = "P1_8"
+
+
 
 
 def setup():
@@ -16,14 +21,15 @@ def setup():
     PWM.start(servo2, 5, 50, 0)
     PWM.start(servo3, 5, 50, 0)
     PWM.start(servo4, 5, 50, 0)
+    
 
 def moveFrontRight():
 
     print("Task 1 assigned to thread: {}".format(threading.current_thread().name))
 
     # Rotate the servo CCW 180 degrees
-    PWM.set_duty_cycle(servo1, 10)
-    time.sleep (0.1)
+    PWM.set_duty_cycle(servo1, 15)
+    time.sleep (0.5)
 
     PWM.set_duty_cycle(servo1, 5)
 
@@ -31,12 +37,12 @@ def moveFrontRight():
     
 def moveFrontLeft():
     
-
+    time.sleep (1)
     print("Task 2 assigned to thread: {}".format(threading.current_thread().name))
     
     # Rotate the servo CCW 180 degrees
-    PWM.set_duty_cycle(servo2, 10)
-    time.sleep (0.1)
+    PWM.set_duty_cycle(servo2, 15)
+    time.sleep (0.5)
 
     PWM.set_duty_cycle(servo2, 5)
 
@@ -44,11 +50,12 @@ def moveFrontLeft():
 
 def moveBackRight():
     
+    time.sleep (1.5)
     print("Task 3 assigned to thread: {}".format(threading.current_thread().name))
-
+    
     # Rotate the servo CCW 180 degrees
     PWM.set_duty_cycle(servo3, 5)
-    time.sleep (0.1)
+    time.sleep (0.5)
 
     PWM.set_duty_cycle(servo3, 20)
 
@@ -59,9 +66,9 @@ def moveBackLeft():
     print("Task 4 assigned to thread: {}".format(threading.current_thread().name))
     # Rotate the servo CCW 180 degrees
     PWM.set_duty_cycle(servo4, 5)
-    time.sleep (0.1)
+    time.sleep (0.5)
 
-    PWM.set_duty_cycle(servo4, 15)
+    PWM.set_duty_cycle(servo4, 20)
 
     print("Back Left Motion cycle complete")
 
