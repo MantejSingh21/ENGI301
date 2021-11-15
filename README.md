@@ -1,4 +1,4 @@
-# <h1> ENGI301 Project 1
+# <h1> ENGI301 Project 1 + 2 
 # <h1> Bubba the Spider Robot
 
 This is the repository that contains information on building Bubba the spider robot.It contains the code repo.
